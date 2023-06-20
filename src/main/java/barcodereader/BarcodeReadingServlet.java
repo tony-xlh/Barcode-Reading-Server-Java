@@ -19,15 +19,15 @@ import com.google.gson.Gson;
 
 @SuppressWarnings("serial")
 public class BarcodeReadingServlet extends HttpServlet   {
-	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		System.out.println("read barcodes");
-		StringBuilder responseStrBuilder = new StringBuilder();
+        // TODO Auto-generated method stub
+        System.out.println("read barcodes");
+        StringBuilder responseStrBuilder = new StringBuilder();
         DecodingResult decodingResult = new DecodingResult();
         Gson gson = new Gson();
-		try {
+        try {
             BufferedReader streamReader = new BufferedReader( new InputStreamReader(request.getInputStream(), "UTF-8"));
             String inputStr;
             while ((inputStr = streamReader.readLine()) != null)
@@ -41,19 +41,19 @@ public class BarcodeReadingServlet extends HttpServlet   {
             long endTime = System.nanoTime();
             List<BarcodeResult> barcodeResults = new ArrayList<BarcodeResult>();
             for (TextResult result:results) {
-            	BarcodeResult barcodeResult = new BarcodeResult();
-            	barcodeResult.barcodeText = result.barcodeText;
-            	barcodeResult.barcodeFormat = result.barcodeFormatString;
-            	barcodeResult.barcodeBytes = Base64.getEncoder().encodeToString(result.barcodeBytes);
-            	barcodeResult.x1 = result.localizationResult.resultPoints[0].x;
-            	barcodeResult.x2 = result.localizationResult.resultPoints[1].x;
-            	barcodeResult.x3 = result.localizationResult.resultPoints[2].x;
-            	barcodeResult.x4 = result.localizationResult.resultPoints[3].x;
-            	barcodeResult.y1 = result.localizationResult.resultPoints[0].y;
-            	barcodeResult.y2 = result.localizationResult.resultPoints[1].y;
-            	barcodeResult.y3 = result.localizationResult.resultPoints[2].y;
-            	barcodeResult.y4 = result.localizationResult.resultPoints[3].y;
-            	barcodeResults.add(barcodeResult);
+                BarcodeResult barcodeResult = new BarcodeResult();
+                barcodeResult.barcodeText = result.barcodeText;
+                barcodeResult.barcodeFormat = result.barcodeFormatString;
+                barcodeResult.barcodeBytes = Base64.getEncoder().encodeToString(result.barcodeBytes);
+                barcodeResult.x1 = result.localizationResult.resultPoints[0].x;
+                barcodeResult.x2 = result.localizationResult.resultPoints[1].x;
+                barcodeResult.x3 = result.localizationResult.resultPoints[2].x;
+                barcodeResult.x4 = result.localizationResult.resultPoints[3].x;
+                barcodeResult.y1 = result.localizationResult.resultPoints[0].y;
+                barcodeResult.y2 = result.localizationResult.resultPoints[1].y;
+                barcodeResult.y3 = result.localizationResult.resultPoints[2].y;
+                barcodeResult.y4 = result.localizationResult.resultPoints[3].y;
+                barcodeResults.add(barcodeResult);
             }
             decodingResult.elapsedTime = endTime - startTime;
             decodingResult.results = barcodeResults;
@@ -61,6 +61,5 @@ public class BarcodeReadingServlet extends HttpServlet   {
             e.printStackTrace();
         }
         response.getWriter().write(gson.toJson(decodingResult));
-	}
-
+    }
 }
